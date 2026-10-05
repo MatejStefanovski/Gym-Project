@@ -1,0 +1,14 @@
+version: 1
+ingress:
+  - name: app
+    service: frontend
+    port: 80
+    primary: true
+    access:
+      type: team
+
+  - name: api
+    service: backend
+    port: 8000
+    access:
+      type: cas

@@ -1,0 +1,25 @@
+services:
+  frontend:
+    image: nginx:1.27-alpine
+    cpus: 0.25
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:80/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  backend:
+    image: ghcr.io/matejstefanovski/delovna-proekt:latest
+    cpus: 0.5
+    mem_limit: 512m
+    volumes:
+      - .stack-data/media:/app/media
+      - .stack-data/db:/app/database
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "check"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
