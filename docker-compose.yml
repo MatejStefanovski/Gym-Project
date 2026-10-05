@@ -1,8 +1,8 @@
 services:
   frontend:
     image: nginx:1.27-alpine
-    cpus: 0.25
-    mem_limit: 256m
+    cpus: 0.1
+    mem_limit: 128m
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:80/"]
       interval: 10s
@@ -12,8 +12,8 @@ services:
 
   backend:
     image: ghcr.io/matejstefanovski/delovna-proekt:latest
-    cpus: 0.5
-    mem_limit: 512m
+    cpus: 0.25
+    mem_limit: 256m
     volumes:
       - .stack-data/media:/app/media
       - .stack-data/db:/app/database
