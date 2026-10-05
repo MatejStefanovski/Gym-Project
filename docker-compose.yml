@@ -18,7 +18,6 @@ services:
     image: ghcr.io/matejstefanovski/delovna-proekt:latest
     cpus: 0.25
     mem_limit: 256m
-    # Внимавајте: 0.0.0.0:8000 е клучната разлика
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./.stack-data/media:/app/media
