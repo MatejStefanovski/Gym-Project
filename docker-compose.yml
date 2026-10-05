@@ -15,7 +15,7 @@ services:
       start_period: 10s
 
   backend:
-    image: ghcr.io/matejst/delovna-proekt:latest
+    image: ghcr.io/matejstefanovski/delovna-proekt:latest
     cpus: 0.25
     mem_limit: 256m
     command: python manage.py runserver 0.0.0.0:8000
