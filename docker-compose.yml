@@ -1,10 +1,16 @@
+version: '3.8'
+
 services:
   frontend:
     image: nginx:1.27-alpine
     cpus: 0.1
     mem_limit: 128m
+    ports:
+      - "80:80"  # Изложување на портата 80 за пристап од прелистувач
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro  # Специјален volume за собиран статички содржини (CSS, JS, images)
+      - media_volume:/app/media:ro        # Volume за кориснички качени медиумски фајлови
     depends_on:
       - backend
     healthcheck:
@@ -18,13 +24,21 @@ services:
     image: ghcr.io/matejstefanovski/delovna-proekt:latest
     cpus: 0.25
     mem_limit: 256m
-    command: python manage.py runserver 0.0.0.0:8000
+    # Прво ги собира статичките фајлови (templates/static), па го стартува серверот
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+            python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./.stack-data/media:/app/media
       - ./.stack-data/db:/app/database
+      - static_volume:/app/staticfiles  # Складирање на собраните статички фајлови од collectstatic
     healthcheck:
       test: ["CMD", "python", "manage.py", "check"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 15s
+
+volumes:
+  static_volume:
+  media_volume:
